@@ -45,3 +45,4 @@ urllib3==1.26.11; python_version >= "3.7" and python_full_version < "3.0.0" and 
 uvloop==0.18.0
 wikipedia==1.4.0
 openai==0.28.0
+ motor<3.2.0,>=2.1.0
