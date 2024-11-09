@@ -61,9 +61,23 @@ def error(update: Update, context: CallbackContext) -> None:
     logger.warning(f"Update {update} caused error {context.error}")
 
 # Main function to set up the bot
-def main():
-    updater = Updater(TELEGRAM_BOT_TOKEN, use_context=True)
-    
+
+from telegram import Update
+from telegram.ext import Application, CommandHandler, CallbackContext
+
+# Initialize Application instead of Updater
+application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+
+# Example of a command handler
+async def start(update: Update, context: CallbackContext):
+    await update.message.reply_text("Hello, I am your bot!")
+
+# Add handlers
+application.add_handler(CommandHandler("start", start))
+
+# Start polling for updates
+application.run_polling()
+
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
