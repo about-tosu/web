@@ -1,7 +1,7 @@
 import logging
 import yt_dlp as ytdl
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, CallbackContext
 from telegram.ext import CallbackContext
 import os
 import tempfile
