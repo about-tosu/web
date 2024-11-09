@@ -38,6 +38,12 @@ def search_youtube(song_name, update):
         url = info_dict['entries'][0]['url']
         update.message.reply_text(f"Here is the music link: {url}")
 
+class Updater:
+    def __init__(self, token, update_queue):
+        self.token = token
+        self.update_queue = update_queue
+        # other initialization code
+
 # Register handlers with the bot
 def main():
     updater = Updater(TOKEN)
