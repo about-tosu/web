@@ -1,95 +1,64 @@
-import logging
-import yt_dlp as ytdl
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, CallbackContext
-from telegram.ext import CallbackContext
+from flask import Flask, request
 import os
-import tempfile
-import ffmpeg
+import youtube_dl
+from telegram import Bot
+from telegram.ext import Updater, CommandHandler
+import requests
 
-# Set up logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Set up the Flask app
+app = Flask(__name__)
 
-# Replace with your bot's token
-TELEGRAM_BOT_TOKEN = '7073381155:AAHsMLX0Us5PTTFi1tKqO2ODJGrcCU-psz4'
+# Telegram bot token and bot object
+TOKEN = '7073381155:AAHsMLX0Us5PTTFi1tKqO2ODJGrcCU-psz4'
+bot = Bot(token=TOKEN)
 
-# Function to handle the /start command
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Welcome to the music bot! Send me a song title and I\'ll fetch it for you.')
+# Start Telegram Bot
+def start(update, context):
+    update.message.reply_text("Hello! Send /play <song_name> to play music.")
 
-# Function to search and download the song
-def search_and_play(update: Update, context: CallbackContext) -> None:
-    query = ' '.join(context.args)
-    if not query:
-        update.message.reply_text("Please provide a song name after the command.")
-        return
-    
-    update.message.reply_text(f"Searching for: {query}...")
+def play(update, context):
+    if context.args:
+        song_name = ' '.join(context.args)
+        search_youtube(song_name, update)
+    else:
+        update.message.reply_text("Please provide a song name after /play.")
 
-    # Search for the song on YouTube and get the best match URL
+def search_youtube(song_name, update):
+    # Use youtube-dl or yt-dlp to search for a song and get its URL
+    query = f"ytsearch:{song_name}"
     ydl_opts = {
         'format': 'bestaudio/best',
-        'noplaylist': True,
+        'quiet': True,
         'extractaudio': True,
         'outtmpl': 'downloads/%(id)s.%(ext)s',
-        'quiet': True,
     }
+    
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        info_dict = ydl.extract_info(query, download=False)
+        url = info_dict['entries'][0]['url']
+        update.message.reply_text(f"Here is the music link: {url}")
 
-    with ytdl.YoutubeDL(ydl_opts) as ydl:
-        try:
-            info_dict = ydl.extract_info(f"ytsearch:{query}", download=False)
-            video = info_dict['entries'][0]
-            video_url = video['url']
-            video_title = video['title']
-            update.message.reply_text(f"Found: {video_title}\nNow downloading...")
-            # Download audio
-            ydl.download([video_url])
-
-            # Send the audio file to Telegram
-            file_path = f"downloads/{video['id']}.mp3"
-            update.message.reply_audio(open(file_path, 'rb'))
-            os.remove(file_path)  # Clean up downloaded file
-
-        except Exception as e:
-            update.message.reply_text("Sorry, I couldn't find a song with that name.")
-            logger.error(f"Error: {e}")
-
-# Function to handle errors
-def error(update: Update, context: CallbackContext) -> None:
-    logger.warning(f"Update {update} caused error {context.error}")
-
-# Main function to set up the bot
-
-from telegram import Update
-from telegram.ext import Application, CommandHandler, CallbackContext
-
-# Initialize Application instead of Updater
-application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-
-# Example of a command handler
-async def start(update: Update, context: CallbackContext):
-    await update.message.reply_text("Hello, I am your bot!")
-
-# Add handlers
-application.add_handler(CommandHandler("start", start))
-
-# Start polling for updates
-application.run_polling()
-
-    # Get the dispatcher to register handlers
-
-    # Add command handlers
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("play", search_and_play))
-
-    # Log all errors
-    dp.add_error_handler(error)
-
-    # Start the Bot
+# Register handlers with the bot
+def main():
+    updater = Updater(TOKEN)
+    dispatcher = updater.dispatcher
+    dispatcher.add_handler(CommandHandler('start', start))
+    dispatcher.add_handler(CommandHandler('play', play))
+    
     updater.start_polling()
     updater.idle()
 
+# Flask route to interact with the web
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = Update.de_json(json.loads(json_str), bot)
+    dispatcher.process_update(update)
+    return 'ok'
+
 if __name__ == '__main__':
-    main()
+    from threading import Thread
+    t = Thread(target=main)
+    t.start()
+
+    app.run(host="0.0.0.0", port=5000)
