@@ -79,7 +79,6 @@ application.add_handler(CommandHandler("start", start))
 application.run_polling()
 
     # Get the dispatcher to register handlers
-    dp = updater.dispatcher
 
     # Add command handlers
     dp.add_handler(CommandHandler("start", start))
