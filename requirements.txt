@@ -1,5 +1,5 @@
 aiofiles
-aiohttp
+aiohttp==3.7.3
 asyncio
 beautifulsoup4
 dnspython
@@ -7,7 +7,7 @@ ffmpeg-python
 gitpython
 hachoir
 heroku3
-motor
+motor<3.2.0,>=2.1.0
 pillow
 psutil
 py-tgcalls==1.2.9
