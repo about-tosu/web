@@ -1,1 +1,2 @@
-python music_bot.py
+web: python app.py
+
