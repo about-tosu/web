@@ -11,6 +11,8 @@ ydl_opts = {
     'quiet': True,
 }
 
+query = 'https://www.youtube.com/watch?v=example_video_id'
+
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
     info_dict = ydl.extract_info(query, download=False)
 
