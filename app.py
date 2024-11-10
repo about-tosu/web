@@ -4,7 +4,7 @@ import youtube_dl
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler
 import requests
-import yt_dlp as youtube_dl
+
 
 ydl_opts = {
     'cookiefile': 'path_to_your_cookies.txt',  # Ensure you have a valid cookies file
