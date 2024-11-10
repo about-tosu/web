@@ -39,7 +39,7 @@ def search_youtube(song_name, update):
         update.message.reply_text(f"Here is the music link: {url}")
 
 class Updater:
-    def __init__(self, token, update_queue):
+    def __init__(self, token, update_queue=None):
         self.token = token
         self.update_queue = update_queue
         # other initialization code
