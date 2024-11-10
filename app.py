@@ -9,8 +9,8 @@ import requests
 app = Flask(__name__)
 
 # Telegram bot token and bot object
-TOKEN = '7073381155:AAHsMLX0Us5PTTFi1tKqO2ODJGrcCU-psz4'
-bot = Bot(token=TOKEN)
+TOKEN = '7073593799:AAEBjG7JZeiV_2n5MMeRHpxEx1bI_hpY7p0'
+bot = Bot(token="7073593799:AAEBjG7JZeiV_2n5MMeRHpxEx1bI_hpY7p0")
 
 # Start Telegram Bot
 def start(update, context):
@@ -49,7 +49,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler
 
 # Create an Application instance instead of an Updater instance
-application = Application.builder().token("TOKEN").build()
+application = Application.builder().token("7073593799:AAEBjG7JZeiV_2n5MMeRHpxEx1bI_hpY7p0").build()
 
 # Add handlers
 application.add_handler(CommandHandler("start", start))
