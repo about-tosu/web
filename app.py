@@ -6,15 +6,20 @@ from telegram.ext import Updater, CommandHandler
 import requests
 import yt_dlp as youtube_dl
 
+import yt_dlp as youtube_dl
+
+query = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+
 ydl_opts = {
-    'cookiefile': 'path_to_your_cookies.txt',  # Ensure you have a valid cookies file
-    'quiet': True,
+    'cookies': 'path_to_cookies.txt',  # Use the path to your cookies file
 }
 
-query = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'  # Correct YouTube URL
-
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    info_dict = ydl.extract_info(query, download=False)
+    try:
+        info_dict = ydl.extract_info(query, download=False)
+        print(info_dict)
+    except youtube_dl.utils.DownloadError as e:
+        print(f"Error: {e}")
 
 # Set up the Flask app
 app = Flask(__name__)
