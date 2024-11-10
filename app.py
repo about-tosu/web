@@ -45,14 +45,21 @@ class Updater:
         # other initialization code
 
 # Register handlers with the bot
-def main():
-    updater = Updater(TOKEN)
-    dispatcher = updater.dispatcher
-    dispatcher.add_handler(CommandHandler('start', start))
-    dispatcher.add_handler(CommandHandler('play', play))
+from telegram import Update
+from telegram.ext import Application, CommandHandler
+
+# Create an Application instance instead of an Updater instance
+application = Application.builder().token("TOKEN").build()
+
+# Add handlers
+application.add_handler(CommandHandler("start", start))
+application.add_handler(CommandHandler('play', play))
+# Run the application
+application.run_polling()
+
     
-    updater.start_polling()
-    updater.idle()
+    
+    
 
 # Flask route to interact with the web
 @app.route('/webhook', methods=['POST'])
