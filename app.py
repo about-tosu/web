@@ -30,7 +30,7 @@ def play(update, context):
         song_name = ' '.join(context.args)
         search_youtube(song_name, update)
     else:
-        update.message.reply_text("Please provide a song name after /play.")
+        await update.message.reply_text("Hello! Send /play <song_name> to play music.")
 
 def search_youtube(song_name, update):
     # Use youtube-dl or yt-dlp to search for a song and get its URL
