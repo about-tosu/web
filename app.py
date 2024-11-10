@@ -4,6 +4,15 @@ import youtube_dl
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler
 import requests
+import yt_dlp as youtube_dl
+
+ydl_opts = {
+    'cookiefile': 'path_to_your_cookies.txt',  # Ensure you have a valid cookies file
+    'quiet': True,
+}
+
+with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    info_dict = ydl.extract_info(query, download=False)
 
 # Set up the Flask app
 app = Flask(__name__)
