@@ -4,14 +4,14 @@ import youtube_dl
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler
 import requests
-
+import yt_dlp as youtube_dl
 
 ydl_opts = {
     'cookiefile': 'path_to_your_cookies.txt',  # Ensure you have a valid cookies file
     'quiet': True,
 }
 
-query = 'https://www.youtube.com/watch?v=example_video_id'
+query = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'  # Correct YouTube URL
 
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
     info_dict = ydl.extract_info(query, download=False)
