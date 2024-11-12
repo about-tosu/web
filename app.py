@@ -9,7 +9,7 @@ import requests
 query = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 
 ydl_opts = {
-    'cookies': 'cookies/cookies.txt',  # Use the path to your cookies file
+    'cookies': 'cookies.txt',  # Use the path to your cookies file
 }
 
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
