@@ -4,9 +4,7 @@ import youtube_dl
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler
 import requests
-import yt_dlp as youtube_dl
-
-import yt_dlp as youtube_dl
+ 
 
 query = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 
